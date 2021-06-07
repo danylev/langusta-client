@@ -37,12 +37,16 @@ class Command(BaseCommand):
         parser.add_argument(
             "-ar", "--append-references", action="store_true", dest='append_references', default=False,
         )
+        parser.add_argument(
+            "-O", "--overwrite", action="store_true", dest='overwrite', default=False,
+        )
 
     def handle(self, *args, **options):
         self.debug = bool(options.get('dry_run'))
         self.env_tag = options.get('tag', '')
         self.actualize = options.get('actualize')
         self.append_references = options.get('append_references')
+        self.overwrite = options.get('overwrite')
         self.upload_translation_file()
 
     @property
@@ -86,6 +90,7 @@ class Command(BaseCommand):
                 'import_id': langusta_import_id,
                 'actualize': self.actualize,
                 'append_references': self.append_references,
+                'overwrite': self.overwrite,
             }
 
             headers = {
