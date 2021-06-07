@@ -34,11 +34,15 @@ class Command(BaseCommand):
         parser.add_argument(
             "-A", "--actualize", action="store_true", dest="actualize", default=False
         )
+        parser.add_argument(
+            "-ar", "--append-references", action="store_true", dest='append_references', default=False,
+        )
 
     def handle(self, *args, **options):
         self.debug = bool(options.get('dry_run'))
         self.env_tag = options.get('tag', '')
         self.actualize = options.get('actualize')
+        self.append_references = options.get('append_references')
         self.upload_translation_file()
 
     @property
@@ -81,6 +85,7 @@ class Command(BaseCommand):
                 'language': language,
                 'import_id': langusta_import_id,
                 'actualize': self.actualize,
+                'append_references': self.append_references,
             }
 
             headers = {
